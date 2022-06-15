@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, getDoc, doc } from 'firebase/firestore';
+import { collection, doc, addDoc, getDocs, getDoc, updateDoc } from 'firebase/firestore';
 
 import db from '../db.js';
 import User from '../models/userModel.js';
@@ -58,4 +58,21 @@ const getUserById = async (req, res, _next) => {
   }
 }
 
-export { createUser, getAllUsers, getUserById };
+const updateUser = async (req, res, _next) => {
+  try {
+    const { id } = req.params;
+    const { firstName, lastName, age } = req.body;
+
+    const docRef = doc(db, 'users', id);
+    await updateDoc(docRef, {
+      firstName,
+      lastName,
+      age
+    });
+    return res.send('User successfully updated');
+  } catch (error) {
+    return res.status(400).send(error.message);
+  }
+}
+
+export { createUser, getAllUsers, getUserById, updateUser };
