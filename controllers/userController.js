@@ -1,11 +1,13 @@
-import firebase from 'firebase';
-
-const firestore = firebase.firestore();
+import { collection, addDoc } from 'firebase/firestore';
+import db from '../db.js';
 
 const createUser = async (req, res, next) => {
   try {
-    const data = req.body;
-    await firestore.collection('users').doc().set(data);
+    const { name, age } = req.body;
+    await addDoc(collection(db, 'users'), {
+      name,
+      age
+    });
     return res.send('User successfully created!');
   } catch (error) {
     return res.status(400).send(error.message);
