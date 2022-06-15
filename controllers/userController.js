@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, getDocs, getDoc, doc } from 'firebase/firestore';
 
 import db from '../db.js';
 import User from '../models/userModel.js';
@@ -17,7 +17,7 @@ const createUser = async (req, res, _next) => {
   }
 }
 
-const getAllUsers = async (req, res, next) => {
+const getAllUsers = async (_req, res, _next) => {
   try {
     const users = await getDocs(collection(db, 'users'));
     const usersArray = [];
@@ -41,4 +41,21 @@ const getAllUsers = async (req, res, next) => {
   }
 }
 
-export { createUser, getAllUsers };
+const getUserById = async (req, res, _next) => {
+  try {
+    const { id } = req.params;
+
+    const docRef = doc(db, 'users', id);
+    const user = await getDoc(docRef);
+
+    if (user.exists()) {
+      return res.send(user.data());
+    } else {
+      return res.status(404).send('User not found');
+    }
+  } catch (error) {
+    return res.status(400).send(error.message);
+  }
+}
+
+export { createUser, getAllUsers, getUserById };
