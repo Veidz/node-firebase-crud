@@ -6,3 +6,5 @@ class User {
     this.age = age;
   }
 }
+
+export default User;
