@@ -3,9 +3,10 @@ import db from '../db.js';
 
 const createUser = async (req, res, next) => {
   try {
-    const { name, age } = req.body;
+    const { firstName, lastName, age } = req.body;
     await addDoc(collection(db, 'users'), {
-      name,
+      firstName,
+      lastName,
       age
     });
     return res.send('User successfully created!');
