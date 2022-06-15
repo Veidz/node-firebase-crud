@@ -25,12 +25,12 @@ const getAllUsers = async (req, res, next) => {
     if (users.empty) {
       return res.status(404).send('No registered user');
     } else {
-      users.forEach((user) => {
+      users.forEach((doc) => {
         const user = new User(
-          user.id,
-          user.firstName,
-          user.lastName,
-          user.age,
+          doc.id,
+          doc.data().firstName,
+          doc.data().lastName,
+          doc.data().age,
         );
         usersArray.push(user);
       });
