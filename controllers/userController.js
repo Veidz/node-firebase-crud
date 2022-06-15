@@ -1,4 +1,4 @@
-import { collection, doc, addDoc, getDocs, getDoc, updateDoc } from 'firebase/firestore';
+import { collection, doc, addDoc, getDocs, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 
 import db from '../db.js';
 import User from '../models/userModel.js';
@@ -75,4 +75,22 @@ const updateUser = async (req, res, _next) => {
   }
 }
 
-export { createUser, getAllUsers, getUserById, updateUser };
+const deleteUser = async (req, res, _next) => {
+  try {
+    const { id } = req.params;
+
+    const docRef = doc(db, 'users', id);
+    await deleteDoc(docRef);
+    return res.send('User successfully deleted');
+  } catch (error) {
+    return res.status(400).send(error.message);
+  }
+}
+
+export {
+  createUser,
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+};
